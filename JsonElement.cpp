@@ -4,9 +4,11 @@
 
 #include "JsonElement.h"
 
+#include <stdexcept>
+
 
 namespace jsonparser {
-JsonElement::JsonElement(JsonType type, const std::unordered_map<std::string, JsonElement>& object) {
+JsonElement::JsonElement(JsonType type, const std::vector<std::pair<std::string, JsonElement>>& object) {
     if (type != OBJECT) {
         throw std::invalid_argument("type has to be OBJECT for this contructor");
     }

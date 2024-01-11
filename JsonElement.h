@@ -22,10 +22,10 @@ enum JsonType {
     NULL_TYPE
 };
 
-class JsonElement {
+struct JsonElement {
 private:
     JsonType _type;
-    std::unordered_map<std::string, JsonElement> _object;
+    std::vector<std::pair<std::string, JsonElement>> _object;
     std::vector<JsonElement> _array;
     std::string _string_val;
     std::int64_t _number_int;
@@ -33,7 +33,7 @@ private:
     bool _bool_val;
 
 public:
-    JsonElement(JsonType type, const std::unordered_map<std::string, JsonElement>& object);
+    JsonElement(JsonType type, const std::vector<std::pair<std::string, JsonElement>>& object);
 
     JsonElement(JsonType type);
 
