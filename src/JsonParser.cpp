@@ -1,7 +1,6 @@
 
 #include "JsonParser.h"
 
-#include <format>
 #include <istream>
 
 namespace jsonparser {
@@ -19,17 +18,15 @@ char JsonParser::read_char(std::istream& stream) {
 }
 
 void JsonParser::throw_parsing_exception(char expected, char got) {
-    throw std::runtime_error(std::format(
-            "Line {}:{} - {} - Expected '{}', but got '{}'",
-            _line_number, _char_number, _current_line_read, expected, got
-            ));
+    throw std::runtime_error(
+        "Line " + std::to_string(_line_number) + ":" + std::to_string(_char_number) + " - " + _current_line_read +
+        " - Expected '" + expected + "', but got '" + got + "'");
 }
 
 void JsonParser::throw_parsing_exception(std::string expected, std::string got) {
-throw std::runtime_error(std::format(
-        "Line {}:{} - {} - Expected '{}', but got '{}'",
-        _line_number, _char_number, _current_line_read, expected, got
-        ));
+throw std::runtime_error(
+        "Line " + std::to_string(_line_number) + ":" + std::to_string(_char_number) + " - " + _current_line_read +
+        " - Expected '" + expected + "', but got '" + got + "'");
 }
 
 JsonParser::JsonParser() {
@@ -38,10 +35,12 @@ JsonParser::JsonParser() {
 }
 
 JsonElement JsonParser::parse_object(std::istream& stream) {
+    read_char(stream); // TODO: only in public method
     if (_char_read != '{') {
         throw_parsing_exception('{', _char_read);
     }
 
+    read_char(stream);
     std::vector<std::pair<std::string, JsonElement>> object = parse_members(stream);
 
     char c = read_char(stream);
@@ -57,14 +56,14 @@ JsonElement JsonParser::parse_value(std::istream& stream) {
         read_char(stream);
         return parse_object(stream);
     }
-    if (_char_read == '[') {
-        read_char(stream);
-        return parse_array(stream);
-    }
-    if (_char_read == '"') {
-        read_char(stream);
-        return parse_string(stream);
-    }
+    // if (_char_read == '[') {
+    //     read_char(stream);
+    //     return parse_array(stream);
+    // }
+    // if (_char_read == '"') {
+    //     read_char(stream);
+    //     return parse_string(stream);
+    // }
     if (_char_read == 't') {
         validate_target_string(stream, "true");
 
@@ -78,7 +77,14 @@ JsonElement JsonParser::parse_value(std::istream& stream) {
         return JsonElement(BOOL, false);
     }
 
-    if (_char_read == )
+    if (_char_read == 'n') {
+        validate_target_string(stream, "null");
+
+        read_char(stream);
+        return JsonElement(NULL_TYPE);
+    }
+
+    throw_parsing_exception('n', _char_read);
 }
 
 std::vector<std::pair<std::string, JsonElement>> JsonParser::parse_members(std::istream& stream) {
@@ -101,6 +107,7 @@ std::vector<std::pair<std::string, JsonElement>> JsonParser::parse_members(std::
         throw_parsing_exception(':', c);
     }
 
+    read_char(stream);
     JsonElement value = parse_element(stream);
 
     read_char(stream);
@@ -118,6 +125,11 @@ std::vector<std::pair<std::string, JsonElement>> JsonParser::parse_members_plus(
 
     read_char(stream);
     return parse_members(stream);
+}
+
+JsonElement JsonParser::parse_element(std::istream& stream) {
+    // TODO: Implement
+    return JsonElement(NULL_TYPE);
 }
 
 void JsonParser::validate_target_string(std::istream& stream, std::string target) {

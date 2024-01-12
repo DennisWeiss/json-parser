@@ -73,7 +73,7 @@ JsonType JsonElement::type() const {
     return _type;
 }
 
-std::unordered_map<std::string, JsonElement> JsonElement::object() const {
+std::vector<std::pair<std::string, JsonElement>> JsonElement::object() const {
     return _object;
 }
 

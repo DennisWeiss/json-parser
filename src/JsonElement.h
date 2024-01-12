@@ -51,7 +51,7 @@ public:
 
     JsonType type() const;
 
-    std::unordered_map<std::string, JsonElement> object() const;
+    std::vector<std::pair<std::string, JsonElement>> object() const;
 
     std::vector<JsonElement> array() const;
 
