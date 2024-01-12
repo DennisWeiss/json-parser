@@ -49,19 +49,19 @@ public:
 
     void add_to_array(const JsonElement& elm);
 
-    JsonType type() const;
+    JsonType type();
 
-    std::vector<std::pair<std::string, JsonElement>> object() const;
+    std::vector<std::pair<std::string, JsonElement>>& object();
 
-    std::vector<JsonElement> array() const;
+    std::vector<JsonElement>& array();
 
-    std::string string_val() const;
+    std::string& string_val();
 
-    std::int64_t number_int() const;
+    std::int64_t number_int();
 
-    double number_float() const;
+    double number_float();
 
-    bool bool_val() const;
+    bool bool_val();
 };
 
 } // jsonparser

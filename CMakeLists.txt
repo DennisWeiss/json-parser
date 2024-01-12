@@ -3,12 +3,21 @@ project(json_parser)
 
 set(CMAKE_CXX_STANDARD 20)
 
-add_executable(json_parser
-        src/main.cpp
+#add_executable(json_parser_runner
+#        src/main.cpp
+#        src/JsonElement.h
+#        src/JsonElement.cpp
+#        src/JsonParser.h
+#        src/JsonParser.cpp)
+
+add_library(
+        json_parser
+        SHARED
         src/JsonElement.h
         src/JsonElement.cpp
         src/JsonParser.h
-        src/JsonParser.cpp)
+        src/JsonParser.cpp
+)
 
 include(FetchContent)
 
@@ -22,19 +31,19 @@ FetchContent_MakeAvailable(googletest)
 
 enable_testing()
 
-include_directories(${CMAKE_CURRENT_SOURCE_DIR}/src)
-
 if(BUILD_TESTING)
-    add_subdirectory (tests)
+    add_subdirectory(tests)
 endif()
 
 add_executable(
         json_parser_test
         test/JsonParserTest.cpp
 )
+target_include_directories(json_parser_test PUBLIC ${CMAKE_SOURCE_DIR}/src)
 target_link_libraries(
         json_parser_test
         GTest::gtest_main
+        json_parser
 )
 
 include(GoogleTest)

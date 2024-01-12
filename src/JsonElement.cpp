@@ -69,31 +69,31 @@ void JsonElement::add_to_array(const JsonElement& elm) {
     _array.push_back(elm);
 }
 
-JsonType JsonElement::type() const {
+JsonType JsonElement::type() {
     return _type;
 }
 
-std::vector<std::pair<std::string, JsonElement>> JsonElement::object() const {
+std::vector<std::pair<std::string, JsonElement>>& JsonElement::object() {
     return _object;
 }
 
-std::vector<JsonElement> JsonElement::array() const {
+std::vector<JsonElement>& JsonElement::array() {
     return _array;
 }
 
-std::string JsonElement::string_val() const {
+std::string& JsonElement::string_val() {
     return _string_val;
 }
 
-std::int64_t JsonElement::number_int() const {
+std::int64_t JsonElement::number_int() {
     return _number_int;
 }
 
-double JsonElement::number_float() const {
+double JsonElement::number_float() {
     return _number_float;
 }
 
-bool JsonElement::bool_val() const {
+bool JsonElement::bool_val() {
     return _bool_val;
 }
 } // jsonparser
