@@ -3,13 +3,6 @@ project(json_parser)
 
 set(CMAKE_CXX_STANDARD 20)
 
-#add_executable(json_parser_runner
-#        src/main.cpp
-#        src/JsonElement.h
-#        src/JsonElement.cpp
-#        src/JsonParser.h
-#        src/JsonParser.cpp)
-
 add_library(
         json_parser
         SHARED
