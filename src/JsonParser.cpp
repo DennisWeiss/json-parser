@@ -141,18 +141,14 @@ std::vector<std::pair<std::string, JsonElement>> JsonParser::parse_members_plus(
 }
 
 std::pair<std::string, JsonElement> JsonParser::parse_member(std::istream& stream) {
-    std::string field_name;
-    while (true) {
-        char c = read_char(stream);
-        if (c == '"') {
-            break;
-        }
-        field_name += c;
-    }
+    parse_ws(stream);
 
-    char c = read_char(stream);
-    if (c != ':') {
-        throw_parsing_exception(':', c);
+    std::string field_name = parse_string(stream);
+
+    parse_ws(stream);
+
+    if (_char_read != ':') {
+        throw_parsing_exception(':', _char_read);
     }
 
     read_char(stream);
@@ -183,7 +179,10 @@ std::vector<JsonElement> JsonParser::parse_elements_plus(std::istream& stream) {
 }
 
 JsonElement JsonParser::parse_element(std::istream& stream) {
-    return parse_value(stream);
+    parse_ws(stream);
+    JsonElement value = parse_value(stream);
+    parse_ws(stream);
+    return value;
 }
 
 std::string JsonParser::parse_string(std::istream& stream) {
@@ -262,6 +261,15 @@ int JsonParser::parse_sign(std::istream& stream) {
         return -1;
     }
     throw_parsing_exception("+ or -", std::to_string(_char_read));
+}
+
+void JsonParser::parse_ws(std::istream& stream) {
+    while (true) {
+        if (_char_read != '\u0020' && _char_read != '\u000A' && _char_read != '\u000D' && _char_read != '\u0009') {
+            return;
+        }
+        read_char(stream);
+    }
 }
 
 int64_t JsonParser::parse_integer(std::istream& stream) {

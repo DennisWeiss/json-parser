@@ -37,6 +37,7 @@ private:
     double parse_fraction(std::istream& stream);
     int64_t parse_exponent(std::istream& stream);
     int parse_sign(std::istream& stream);
+    void parse_ws(std::istream& stream);
 
     char read_char(std::istream& stream);
     void throw_parsing_exception(char expected, char got);
