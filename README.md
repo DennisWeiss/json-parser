@@ -35,11 +35,11 @@ array
     '[' elements ']'
 
 elements
-    <eps>
+    ""
     element elements+
 
 elements+
-    <eps>
+    ""
     ',' elements
 
 element
