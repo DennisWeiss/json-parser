@@ -3,14 +3,21 @@ project(json_parser)
 
 set(CMAKE_CXX_STANDARD 20)
 
+file(
+        GLOB
+        JSON_PARSER_SRC
+        include/json_parser/*.h
+        src/*.h
+        src/*.cpp
+)
+
 add_library(
         json_parser
         SHARED
-        src/JsonElement.h
-        src/JsonElement.cpp
-        src/JsonParser.h
-        src/JsonParser.cpp
+        ${JSON_PARSER_SRC}
 )
+
+target_include_directories(json_parser PUBLIC ${CMAKE_SOURCE_DIR}/include/json_parser)
 
 include(FetchContent)
 
@@ -28,11 +35,17 @@ if(BUILD_TESTING)
     add_subdirectory(tests)
 endif()
 
+file(
+        GLOB
+        JSON_PARSER_TEST_SRC
+        test/*.cpp
+)
+
 add_executable(
         json_parser_test
-        test/JsonParserTest.cpp
+        ${JSON_PARSER_TEST_SRC}
 )
-target_include_directories(json_parser_test PUBLIC ${CMAKE_SOURCE_DIR}/src)
+target_include_directories(json_parser_test PUBLIC ${CMAKE_SOURCE_DIR}/include/json_parser)
 target_link_libraries(
         json_parser_test
         GTest::gtest_main

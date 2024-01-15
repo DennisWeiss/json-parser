@@ -1,6 +1,8 @@
 #ifndef JSONPARSER_H
 #define JSONPARSER_H
 
+#include <sstream>
+
 #include "JsonElement.h"
 
 namespace jsonparser {
@@ -9,7 +11,7 @@ class JsonParser {
 private:
     uint64_t _line_number;
     uint64_t _char_number;
-    std::string _current_line_read;
+    std::ostringstream _current_line_read;
     char _char_read;
 
 public:

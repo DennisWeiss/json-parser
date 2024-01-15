@@ -2,7 +2,6 @@
 #include "JsonParser.h"
 
 #include <complex>
-#include <io.h>
 #include <istream>
 
 namespace jsonparser {
@@ -12,22 +11,22 @@ char JsonParser::read_char(std::istream& stream) {
     if (_char_read == '\n') {
         _line_number++;
         _char_number = 1;
-        _current_line_read = "";
+        _current_line_read.str("");
     } else {
-        _current_line_read += _char_read;
+        _current_line_read << _char_read;
     }
     return _char_read;
 }
 
 void JsonParser::throw_parsing_exception(char expected, char got) {
     throw std::runtime_error(
-        "Line " + std::to_string(_line_number) + ":" + std::to_string(_char_number) + " - " + _current_line_read +
+        "Line " + std::to_string(_line_number) + ":" + std::to_string(_char_number) + " - " + _current_line_read.str() +
         " - Expected '" + expected + "', but got '" + got + "'");
 }
 
 void JsonParser::throw_parsing_exception(std::string expected, std::string got) {
 throw std::runtime_error(
-        "Line " + std::to_string(_line_number) + ":" + std::to_string(_char_number) + " - " + _current_line_read +
+        "Line " + std::to_string(_line_number) + ":" + std::to_string(_char_number) + " - " + _current_line_read.str() +
         " - Expected '" + expected + "', but got '" + got + "'");
 }
 
